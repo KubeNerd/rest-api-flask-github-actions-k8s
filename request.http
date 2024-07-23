@@ -1,0 +1,22 @@
+### Requisição POST para criar um usuário
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+  "first_name": "Vitor",
+  "last_name": "Souza",
+  "cpf": "4455667846456",
+  "email": "otarion.souza@contato.me",
+  "birth_date": "1996-09-10"
+}
+
+
+### Requisição GET para obter usuários
+GET http://localhost:5000/users
+Content-Type: application/json
+
+
+
+### Requisição GET para obter usuário por CPF
+GET http://localhost:5000/user/4455667846456
+Content-Type: application/json
