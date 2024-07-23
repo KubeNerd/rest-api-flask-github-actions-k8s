@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Api, Resource, reqparse
 from mongoengine import Document, StringField, DateTimeField, NotUniqueError
 from datetime import datetime
+from .model import HealthCheckModel
 import re
 
 app = Flask(__name__)
@@ -133,9 +134,14 @@ class Users(Resource):
         return jsonify(UserModel.objects())
 
 
-api.add_resource(User, '/user', '/user/<string:cpf>')
-api.add_resource(Users, '/users')
-
+class HealthCheck(Resource):
+    def get(self):
+        response = HealthCheckModel(status="healthy").save()
+        if response:
+            return "Healthy", 200
+        else:
+            HealthCheckModel(status="healthy")
+            return "Healthy", 200
 
 if __name__ == '__main__':
     app.run(debug=True)
