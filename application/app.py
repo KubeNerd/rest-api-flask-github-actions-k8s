@@ -18,42 +18,23 @@ class UserModel(Document):
 
 
 user_parser = reqparse.RequestParser()
+user_parser.add_argument("cpf", type=str, required=True, help="CPF is required")
+user_parser.add_argument("email", type=str, required=True, help="Email is required")
 user_parser.add_argument(
-    'cpf',
-    type=str,
-    required=True,
-    help="CPF is required"
+    "first_name", type=str, required=True, help="First name is required"
 )
 user_parser.add_argument(
-    'email',
-    type=str,
-    required=True,
-    help="Email is required"
+    "last_name", type=str, required=True, help="Last name is required"
 )
 user_parser.add_argument(
-    'first_name',
-    type=str,
-    required=True,
-    help="First name is required"
-)
-user_parser.add_argument(
-    'last_name',
-    type=str,
-    required=True,
-    help="Last name is required"
-)
-user_parser.add_argument(
-    'birth_date',
-    type=str,
-    required=True,
-    help="Birth date is required"
+    "birth_date", type=str, required=True, help="Birth date is required"
 )
 
 
 class User(Resource):
     def validate_cpf(self, cpf):
         # Has the correct mask?
-        if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
+        if not re.match(r"\d{3}\.\d{3}\.\d{3}-\d{2}", cpf):
             return False
 
         # Grab only numbers
@@ -64,17 +45,13 @@ class User(Resource):
             return False
 
         # Validate first digit after -
-        sum_of_products = sum(
-            a * b for a, b in zip(numbers[0:9], range(10, 1, -1))
-        )
+        sum_of_products = sum(a * b for a, b in zip(numbers[0:9], range(10, 1, -1)))
         expected_digit = (sum_of_products * 10 % 11) % 10
         if numbers[9] != expected_digit:
             return False
 
         # Validate second digit after -
-        sum_of_products = sum(
-            a * b for a, b in zip(numbers[0:10], range(11, 1, -1))
-        )
+        sum_of_products = sum(a * b for a, b in zip(numbers[0:10], range(11, 1, -1)))
         expected_digit = (sum_of_products * 10 % 11) % 10
         if numbers[10] != expected_digit:
             return False
@@ -88,16 +65,16 @@ class User(Resource):
             return {"message": "CPF is invalid!"}, 400
 
         try:
-            birth_date = datetime.strptime(data['birth_date'], '%Y-%m-%d')
+            birth_date = datetime.strptime(data["birth_date"], "%Y-%m-%d")
         except ValueError:
             return {"message": "Birth date format is incorrect!"}, 400
 
         user = UserModel(
-            cpf=data['cpf'],
-            email=data['email'],
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            birth_date=birth_date
+            cpf=data["cpf"],
+            email=data["email"],
+            first_name=data["first_name"],
+            last_name=data["last_name"],
+            birth_date=birth_date,
         )
 
         try:
@@ -115,7 +92,7 @@ class User(Resource):
                 "email": response.email,
                 "first_name": response.first_name,
                 "last_name": response.last_name,
-                "birth_date": response.birth_date.strftime('%Y-%m-%d')
+                "birth_date": response.birth_date.strftime("%Y-%m-%d"),
             }, 200
 
         return {"message": "User does not exist in database!"}, 404
@@ -124,10 +101,10 @@ class User(Resource):
         response = UserModel.objects(cpf=cpf)
         if response:
             response.delete()
-            return {"messsage":"User deleted"}, 204
+            return {"messsage": "User deleted"}, 204
         else:
             return {"message": "User does not exist in database!"}, 404
-        
+
 
 class Users(Resource):
     def get(self):
@@ -143,5 +120,6 @@ class HealthCheck(Resource):
             HealthCheckModel(status="healthy")
             return "Healthy", 200
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(debug=True)

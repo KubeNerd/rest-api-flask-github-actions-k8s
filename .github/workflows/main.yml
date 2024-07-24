@@ -16,9 +16,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install flake8 pytest mongomock
+          pip install flake8 pytest mongomock black
       - name: Run tests
-        run: make test || true
+        run: |
+          black .
+          make test || true
 
   build:
     needs: [tests]
@@ -37,26 +39,4 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.event.repository.name }}:${{ github.run_id }}
           docker tag ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.event.repository.name }}:${{ github.run_id }} ${{ secrets.DOCKERHUB_REGISTRY }}/restapi-flask:latest
-          docker push ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.event.repository.name }}:latest
-
-  deploy_heroku:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Heroku
-        run: |
-          echo "machine api.heroku.com" > ~/.netrc
-          echo "  login ${{ secrets.HEROKU_EMAIL }}" >> ~/.netrc
-          echo "  password ${{ secrets.HEROKU_API_KEY }}" >> ~/.netrc
-          echo "machine git.heroku.com" >> ~/.netrc
-          echo "  login ${{ secrets.HEROKU_EMAIL }}" >> ~/.netrc
-          echo "  password ${{ secrets.HEROKU_API_KEY }}" >> ~/.netrc
-      - name: Deploy Heroku
-        run: |
-          make heroku
-        env:
-          APP: restapi-flask
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+          docker push ${{ secrets.DOCKERHUB_REGISTRY }}/${{ github.event.repository.name }}:latest 
