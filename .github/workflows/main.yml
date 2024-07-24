@@ -19,7 +19,8 @@ jobs:
           pip install flake8 pytest mongomock black
       - name: Run tests
         run: |
-          make test || true
+            bandint -r . -x '/tests'
+          # make test || true
 
   build:
     needs: [tests]
