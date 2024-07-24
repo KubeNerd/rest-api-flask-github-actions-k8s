@@ -1,6 +1,6 @@
 APP = restapi-flask
 test:
-	@bandint -r . -x '/.venv', '/tests'
+	@bandit -c bandit.toml -r .
 	@black .
 	@flake8 . --exclude .venv
 	@pytest -v --disable-warnings

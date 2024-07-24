@@ -1,0 +1,4 @@
+# FILE: pyproject.toml
+### profile may optionally select or skip tests
+[tool.bandit]
+exclude_dirs: ['tests']
