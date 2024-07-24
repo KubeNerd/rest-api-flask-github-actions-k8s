@@ -38,3 +38,7 @@ Este projeto evoluiu para rodar no Kubernetes, integrando diversas ferramentas d
 10. **Criar uma estratégia de deployment com o mínimo possível de erros.**
 
 11. **Evoluir a pipeline no GitHub Actions adicionando os novos testes e deployando no EKS.**
+
+
+Novas referências: 
+   Scann de segurança https://github.com/PyCQA/bandit
