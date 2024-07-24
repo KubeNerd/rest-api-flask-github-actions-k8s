@@ -1,7 +1,7 @@
 # bandit.toml
 [bandit]
 # Exclude specific directories
-exclude_dirs = ["tests", "./tests"]
+exclude_dirs = ["tests", "/tests"]
 
 # Optionally include or exclude tests
 tests = ["B101", "B102", "B103"]
