@@ -19,7 +19,7 @@ jobs:
           pip install flake8 pytest mongomock black bandit
       - name: Run tests
         run: |
-            bandint -r . -x '/tests'
+           bandit -c bandit.toml -r .
           # make test || true
 
   build:
