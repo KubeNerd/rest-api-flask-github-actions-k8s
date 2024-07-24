@@ -1,7 +1,7 @@
 APP = restapi-flask
 test:
-	@black .
 	@bandint -r . -x '/.venv', '/tests'
+	@black .
 	@flake8 . --exclude .venv
 	@pytest -v --disable-warnings
 compose:
