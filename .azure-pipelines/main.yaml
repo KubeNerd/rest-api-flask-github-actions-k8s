@@ -4,17 +4,13 @@ trigger:
     - main
 
 stages:
-- stage: Build
-  displayName: Build App
-  pool:
-    vmImage: 'ubuntu-latest'
+- stage: BuildPush
   jobs:
-  - job: TestdJob
-    displayName: Job de Test
-    steps:
-    - script: echo Building!
-  - job: BuildJob
-    displayName: Job de Build
-    dependsOn: [TestdJob]
+  - job: CheckoutRepo
+    displayName: CheckoutRepo
     steps:
     - checkout: self
+  - template: templates/build.yaml
+    parameters:
+      pool_name: 'ubuntu-latest'
+      repo_name: $(Build.Repository.Name)

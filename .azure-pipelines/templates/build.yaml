@@ -1,0 +1,23 @@
+parameters:
+  - name: job_name
+    displayName: Job Name
+    type: string
+    default: "Build_Image"
+
+  - name: pool_name
+    displayName: Agent Pool
+    type: string
+    default: 'ubuntu-latest'
+
+  - name: repo_name
+    displayName: Repo Name
+    type: string
+
+jobs:
+  - job: ${{ parameters.job_name }}
+    pool:
+      vmImage: ${{ parameters.pool_name }}
+    steps:
+      - script: |
+          docker build -t ${{ parameters.repo_name }}:$(Build.BuildNumber) .
+        displayName: 'Build Docker Image'
