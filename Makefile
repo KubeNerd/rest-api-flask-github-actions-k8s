@@ -14,11 +14,13 @@ heroku:
 	@heroku container:login
 	@heroku container:push -a $(APP) web
 	@heroku container:release -a $(APP) web
-
-kube:
+kube-dev:
 	@kind create cluster --config kubernetes/kind/cluster.yaml
 	@kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 	@kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=90s
+
+teardown-dev:
+	@kind delete clusters kind

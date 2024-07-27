@@ -40,5 +40,29 @@ Este projeto evoluiu para rodar no Kubernetes, integrando diversas ferramentas d
 11. **Evoluir a pipeline no GitHub Actions adicionando os novos testes e deployando no EKS.**
 
 
-Novas referências: 
+# Explorando o Helm Charts
+```bash
+   # Pesquisar por um chart especifico
+   helm search repo mongodb
+   # Baixar pastas do chart
+   helm pull bitname/mongodb --version 12.1.31
+   # Adicionar repositório do chart nos charts locais
+   helm repo add bitnami https://charts.bitnami.com/bitnami
+   # Descompactar o tar
+   tar xfvz mongodb-12.1.31.tgz
+   # Exibir manifestos completos com base nos templatesls
+   helm template .
+   # Sobscrever imagem
+   helm template . --set image.tag=5.0.8
+   # Instalando mongo apartir do diretório atual
+   helm upgrade --install mongodb -n [namespace] .
+   # Instalando da forma correta agora
+   helm upgrade --install mongodb --set image.tag=5.0.8 --set auth.rootPassword="root" -n [namespace] .
+
+   helm upgrade --install mongodb --set image.tag=5.0.8 --set auth.rootPassword="root" -n devops .
+
+```
+
+
+# Novas referências: 
    Scann de segurança https://github.com/PyCQA/bandit
