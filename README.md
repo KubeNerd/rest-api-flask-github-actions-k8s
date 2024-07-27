@@ -58,9 +58,6 @@ Este projeto evoluiu para rodar no Kubernetes, integrando diversas ferramentas d
    helm upgrade --install mongodb -n [namespace] .
    # Instalando da forma correta agora
    helm upgrade --install mongodb --set image.tag=5.0.8 --set auth.rootPassword="root" -n [namespace] .
-
-   helm upgrade --install mongodb --set image.tag=5.0.8 --set auth.rootPassword="root" -n devops .
-
 ```
 
 
