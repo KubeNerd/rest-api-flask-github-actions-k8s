@@ -3,8 +3,8 @@ import os
 
 class DevConfig:
     MONGODB_SETTINGS = {
-        "db": "users",
-        "host": "mongodb",
+        "db": os.getenv("DATABASE_NAME"),
+        "host": os.getenv("DATABASE_HOST"),
         "username": os.getenv("DATABASE_USER"),
         "password": os.getenv("DATABASE_PASSWORD"),
         "port": 27017,

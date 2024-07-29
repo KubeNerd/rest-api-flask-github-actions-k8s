@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi-flask
+  namespace: community-devops
+  labels:
+    app: restapi-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restapi-flask
+  template:
+    metadata:
+      labels:
+        app: restapi-flask
+    spec:
+      containers:
+      - name: restapi-flask
+        image: docker.io/library/restapi-flask:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: FLASK_ENV
+          valueFrom:
+            secretKeyRef:
+              name: flaskapp-secrets
+              key: FLASK_ENV
+              optional: false
+        - name: DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: flaskapp-secrets
+              key: MONGO_DB
+              optional: false
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: flaskapp-secrets
+              key: MONGO_HOST
+              optional: false
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: flaskapp-secrets
+              key: MONGO_INITDB_ROOT_USERNAME
+              optional: false
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: flaskapp-secrets
+              key: MONGO_INITDB_ROOT_PASSWORD
+              optional: false
+        ports:
+        - containerPort: 5000
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 5000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 15
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 5000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 15
+        resources: {}
