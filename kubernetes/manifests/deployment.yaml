@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: restapi-flask
-  namespace: community-devops
+  namespace: development
   labels:
     app: restapi-flask
 spec:
